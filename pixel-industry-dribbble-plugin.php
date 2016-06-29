@@ -96,7 +96,6 @@ class pixel_industry_dribbble_widget extends WP_Widget {
     
     public function widget( $args, $instance ) {
         wp_enqueue_style( 'dribbble-css', plugins_url('css/dribbble.css', __FILE__) );
-        wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css');
         extract( $args );
 
         $title        = apply_filters( 'widget_title', $instance['title'] );
