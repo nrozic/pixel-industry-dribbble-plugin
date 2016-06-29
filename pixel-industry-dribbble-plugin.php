@@ -8,6 +8,7 @@ Author: Nikola Rožić | Pixel Industry
 Author URI: http://www.pixel-industry.com/
 License: GPL2
  */
+
 if ( !defined( 'ABSPATH' ) ) {
     die( 1 );
 }
@@ -27,6 +28,7 @@ class pixel_industry_dribbble_widget extends WP_Widget {
      * Source: https://make.wordpress.org/core/2015/07/02/deprecating-php4-style-constructors-in-wordpress-4-3/
      * 
      */
+    
     function __construct() { 
         parent::__construct(
             'pixel_industry_dribbble_widget', //widget ID
@@ -42,6 +44,7 @@ class pixel_industry_dribbble_widget extends WP_Widget {
      * @param  array   $instance    The widget options
      * 
      */
+    
     public function form( $instance ) {
         // Checking if we already have values set and ready to use
         if ( $instance ) {
@@ -55,50 +58,9 @@ class pixel_industry_dribbble_widget extends WP_Widget {
             $username     = '';
             $number       = '';
             $access_token = '';
-        } ?>
+        } 
 
-        <p>
-            <label for="<?php echo $this->get_field_id('title'); ?>">
-                <?php _e( 'Widget Title', 'pixel-industry-dribbble-plugin' ); ?>        
-            </label>
-
-            <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
-        </p>
-
-        <p>
-            <label for="<?php echo $this->get_field_id('username'); ?>">
-                <?php _e( 'Dribbble username', 'pixel-industry-dribbble-plugin' ); ?>        
-            </label>
-
-            <input class="widefat" id="<?php echo $this->get_field_id('username'); ?>" name="<?php echo $this->get_field_name('username'); ?>" type="text" value="<?php echo $username; ?>" />
-        </p>
-
-        <p>
-            <label for="<?php echo $this->get_field_id('number'); ?>">
-                <?php _e( 'Number of shots to display', 'pixel-industry-dribbble-plugin' ); ?>        
-            </label>
-
-            <input class="widefat" id="<?php echo $this->get_field_id('number'); ?>" name="<?php echo $this->get_field_name('number'); ?>" type="number" value="<?php echo $number; ?>" />
-        </p>
-
-        <p>
-            <label for="<?php echo $this->get_field_id('access_token'); ?>">
-                <?php _e( 'Dribbble access token', 'pixel-industry-dribbble-plugin' ); ?>        
-            </label>
-
-            <input class="widefat" id="<?php echo $this->get_field_id('access_token'); ?>" name="<?php echo $this->get_field_name('access_token'); ?>" type="text" value="<?php echo $access_token; ?>" />
-
-            <p><?php _e( 'You can get your access tokene <a href="https://dribbble.com/account/applications">here</a>', 'pixel-industry-dribbble-plugin' ); ?></p>
-        </p>
-
-        <p>
-            <div style="background: #0073aa; color: white; padding: 8px 10px">
-                <?php _e( '<strong>NOTICE:</strong> By default widget will send request to Dribbble API on every page load. <br><br>Since this is not considered as a good practice, if you would like to cache shoots, have a customizable widget layouts or some other similar option you can hire me ;)', 'pixel-industry-dribbble-plugin' ); ?> 
-            </div>
-        </p>
-
-        
-        <?php 
+        require_once __DIR__ . '/views/form.php';
 
     }
 
@@ -107,20 +69,31 @@ class pixel_industry_dribbble_widget extends WP_Widget {
      * 
      * @param  array $new_instance New options
      * @param  array $old_instance Old options
-     */
+     *
+     * @return  array Array with new options     
+     * */
+
     public function update( $new_instance, $old_instance ) {
         $instance = $old_instance;
 
-        $instance['title']        = strip_tags($new_instance['title']);
-        $instance['username']     = strip_tags($new_instance['username']);
-        $instance['number']       = strip_tags($new_instance['number']);
-        $instance['access_token'] = strip_tags($new_instance['access_token']);
+        $instance['title']        = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+        $instance['username']     = ( ! empty( $new_instance['username'] ) ) ? strip_tags( $new_instance['username'] ) : '';
+        $instance['number']       = ( ! empty( $new_instance['number'] ) ) ? (int)( $new_instance['number'] ) : '';
+        $instance['access_token'] = ( ! empty( $new_instance['access_token'] ) ) ? strip_tags( $new_instance['access_token'] ) : '';
 
         return $instance;
 
     }
 
-    // Function to display the widget content on the frontend
+    /**
+     * Rendering the widget content on the frontend
+     * 
+     * @param  array $args     
+     * @param  array $instance 
+     * 
+     * @return array
+     */
+    
     public function widget( $args, $instance ) {
         wp_enqueue_style( 'dribbble-css', plugins_url('css/dribbble.css', __FILE__) );
         wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css');
@@ -138,6 +111,7 @@ class pixel_industry_dribbble_widget extends WP_Widget {
          * it would be wise to implement method to store data and just send occasionaly request to update cached data.
          * 
          */
+        
         $shots = $this->get_shots( $username, $access_token, $number);
 
         echo $before_widget;
@@ -145,11 +119,11 @@ class pixel_industry_dribbble_widget extends WP_Widget {
         echo '<h3 class="widget-title">' . $title . '</h3>';
 
         if( $shots ) {
-            
+            //echo '<pre>'; print_r( $shots );
             foreach ( $shots as $shot ) {
 
                 echo '<div class="dribbble_shot">';
-                    echo '<a href="' . $shot['html_url'] . '" title="' . $shot['title'] . __( ' on Dribbble', 'pixel-industry-dribble-plugin' ) . '">';
+                    echo '<a href="' . $shot['html_url'] . '" title="' . sprintf( esc_html__( 'View %s on Dribbble', 'pixel-industry-dribble-plugin' ),  $shot['title']) . '">';
                         echo '<img class="responsive-img" src="' . $shot['images']['teaser'] . '" />';
                         echo '<div class="dribbble_toolbar">';
                             echo '<span class="views"><i class="fa fa-eye" aria-hidden="true"></i> ' . $shot['views_count'] . '</span>';
@@ -161,7 +135,9 @@ class pixel_industry_dribbble_widget extends WP_Widget {
             }
             
         } else {
-            _e( '<h1 style="text-align: center;">Sorry, there is no shots to show at this moment :(</h1>', 'pixel-industry-dribbble-plugin' );
+            echo '<h1 style="text-align: center;">';
+            printf( esc_html__( 'Sorry, there is no shots to show at this moment or Dribbble user %s does not exsists.', 'pixel-industry-dribbble-plugin' ), $username );
+            echo '</h1>';
         }
 
         echo $after_widget;
@@ -178,13 +154,13 @@ class pixel_industry_dribbble_widget extends WP_Widget {
      */ 
     private function get_shots( $username, $access_token, $number ) {
 
-        $check = file_get_contents(__FILE__);
+        $check = @file_get_contents(__FILE__);
 
         if( !$check ){
             exit( __( '<pre>Error: PHP Function file_get_contents() is not available, please contact your server administrator.</pre>' ) );
         }
         
-        $dribbble_data = file_get_contents( "https://api.dribbble.com/v1/users/$username/shots?access_token=$access_token&per_page=$number" );
+        $dribbble_data = @file_get_contents( "https://api.dribbble.com/v1/users/$username/shots?access_token=$access_token&per_page=$number" );
         $dribbble      = json_decode( $dribbble_data, true );
 
         return $dribbble;

@@ -1,0 +1,39 @@
+<p>
+    <label for="<?php echo $this->get_field_id('title'); ?>">
+        <?php _e( 'Widget Title', 'pixel-industry-dribbble-plugin' ); ?>        
+    </label>
+
+    <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
+</p>
+
+<p>
+    <label for="<?php echo $this->get_field_id('username'); ?>">
+        <?php _e( 'Dribbble username', 'pixel-industry-dribbble-plugin' ); ?>        
+    </label>
+
+    <input class="widefat" id="<?php echo $this->get_field_id('username'); ?>" name="<?php echo $this->get_field_name('username'); ?>" type="text" value="<?php echo $username; ?>" />
+</p>
+
+<p>
+    <label for="<?php echo $this->get_field_id('number'); ?>">
+        <?php _e( 'Number of shots to display', 'pixel-industry-dribbble-plugin' ); ?>        
+    </label>
+
+    <input class="widefat" id="<?php echo $this->get_field_id('number'); ?>" name="<?php echo $this->get_field_name('number'); ?>" type="number" value="<?php echo $number; ?>" />
+</p>
+
+<p>
+    <label for="<?php echo $this->get_field_id('access_token'); ?>">
+        <?php _e( 'Dribbble access token', 'pixel-industry-dribbble-plugin' ); ?>        
+    </label>
+
+    <input class="widefat" id="<?php echo $this->get_field_id('access_token'); ?>" name="<?php echo $this->get_field_name('access_token'); ?>" type="text" value="<?php echo $access_token; ?>" />
+
+    <p><?php _e( 'You can get your access tokene <a href="https://dribbble.com/account/applications">here</a>', 'pixel-industry-dribbble-plugin' ); ?></p>
+</p>
+
+<p>
+    <div style="background: #0073aa; color: white; padding: 8px 10px">
+        <?php _e( '<strong>NOTICE:</strong> By default widget will send request to Dribbble API on every page load. <br><br>Since this is not considered as a good practice, if you would like to cache shoots, have a customizable widget layouts or some other similar option you can hire me ;)', 'pixel-industry-dribbble-plugin' ); ?> 
+    </div>
+</p>
