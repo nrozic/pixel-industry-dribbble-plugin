@@ -1,7 +1,7 @@
 # Pixel Industry Dribbble Widget for WordPress
 
-[![Version](https://img.shields.io/badge/Version-1.0-brightgreen.svg)](http://delta.dev)
-[![Platforms](https://img.shields.io/badge/Platforms-WordPress-blue.svg)](http://delta.dev)
+[![Version](https://img.shields.io/badge/Version-1.0-brightgreen.svg)](https://github.com/nrozic/pixel-industry-dribbble-plugin)
+[![Platforms](https://img.shields.io/badge/Platforms-WordPress-blue.svg)](https://wordpress.org/)
 
 ## Description:
 
